@@ -1,0 +1,60 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.box, .bomb {
+    height: 25%;
+    width: 12.5%; 
+}
+
+.box, .bomb {
+    margin: 0 auto;
+    padding: 0;
+    float: left;
+    position: relative;
+    background-color: grey;  
+    border-radius: 5px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 225%;
+    font-size: 4em;
+    font-family: monospace;
+}
+
+
+
+.boxContainer {
+    
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+
+}
+.hide {
+    
+    background-color: white;
+}
+
+.flag {
+ background-color: grey; 
+    height: 100%;
+    width: 100%;
+    content: url(images/flag.png);
+    z-index: 3;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.die {
+    background-color: red;
+}
+
+.alive {
+    background-color: greenyellow;
+}
+
