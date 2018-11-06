@@ -1,60 +1,54 @@
 <html>
 <head>
+
+
 <link type="text/css" rel="stylesheet" href="stylesheet.css">
+<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+	
 </head>
 <body>
-    
-        
-    <script>
+	
+<script>  
 		
+	var gridSizeX = 8;
+	var gridSizeY = 8;
+	var totalBombs = 0;
+	
     function hasClass(element, cls) {
     	return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
     }   
 		
     function drawPage(){
-        
-		document.write('<div class="boxContainer">');
-
-		  var rand;    
-
-		  //Generate 8x8 box grid.
-		  for (var x=0; x < 64; x++){
-			  rand = Math.floor(Math.random() * 100); 
-			  //20% chance could generate a bomb on square.
-			  if (rand <= 20){
-				//To help debug, see where bombs are.
-				//document.write('<div class="bomb" id="' + x +'">bomb</div>'); 
-				document.write('<div class="bomb" id="' + x +'"><img></div>');  
+		$("body").append("<div id='boxContainer'>");
+		var boxContainer = document.getElementById("boxContainer");
+		
+		//Generate grid.
+		for (var y = 0; y < gridSizeY; y++)
+			for (var x = 0; x < gridSizeX; x++)
+			{
+			  var rand = Math.floor(Math.random() * 100);
+			  //20% chance could generate a bomb on generated square.
+			  if (rand <= 20)
+			  {
+				$(boxContainer).append("<div class='bomb' id='" + x + "," + y + "'><img></div>");  
+				totalBombs++;
 			  } else {
-				document.write('<div class="box" id="' + x +'"><img></div>');
-
+				$(boxContainer).append("<div class='box' id='" + x + "," + y + "'><img></div>");  
 			  }
-		  } 
-		document.write('</div>');
+			}
+		console.log("Total bombs: " + totalBombs);
     }
-        
+	
+	function checkWin(){
+		var flags = document.getElementsByClassName("bomb flag");
+		
+		console.log("Total flags: " + flags.length);
+		if (flags.length == totalBombs)
+			alert("You win!");
+	}
+	
+$(document).ready(function(){
     drawPage();
-    
-    </script>
-    
-    
-
-    
-<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-<script type="text/javascript">
-$(document).ready(function(){ //When webpage is loaded.
-    
-    
-    //Draws the mouse trailing effect.
-    $(".box, .bomb").hover(
-        function(){
-        $(this).fadeTo(1, 0.1);
-        $(this).css("outline", "black");
-    },
-        function(){
-        $(this).fadeTo(250, 1);    
-        }
-    );
     
     //toggles press double click.
     $(".bomb").dblclick(function(){
@@ -66,113 +60,29 @@ $(document).ready(function(){ //When webpage is loaded.
     //If normal box clicked.
     $(".box").dblclick(function(){
         $(this).addClass("alive");
-        //Get square number that was clicked.
-        var checkSquare = this.id;
+        //Get coords of square number that was clicked.
+        var checkSquare = this.id.split(",");
+		
         var bombCount = 0; //Keep track of bombs around clicked square.
-        //Check the 8 squares around it to see for bombs.
-        
-        //Set up left side and right side array to avoid checking squares that are not actually in the 8 directly around it.
-        var leftArray = [];
-        var rightArray = [];
-        //8 squares per row.
-        var i = 7;
-        var j = 0;
-        for (var x=0; x<8; x++){
-            leftArray.push(j); 
-            rightArray.push(i);
-            j += 8;
-            i += 8;
-        }
-        //Checks that right square isnt in the farthest left column to avoid wrapping of bomb checks
-        function checkLeft(checkSquare){
-            for (var x=0; x<8; x++){
-                if (parseInt(checkSquare) === leftArray[x]){
-                    //If the sqaure your checking is on the left end of the grid
-                    return true;
-                } 
-            }
-            return false;
-        }
-		 //Checks that right square isnt in the farthest right column to avoid wrapping of bomb checks
-        function checkRight(checkSquare){
-            for (var x=0; x<8; x++){
-                if (parseInt(checkSquare) === rightArray[x]){
-                    
-                    return true;
-                } 
-            }
-            return false;
-        }
-		//Checks if checksquare is in the bottom to avoid wrapping back to top row.
-		function checkDown(checkSquare){
-			
-			if (parseInt(checkSquare) >= 56){
-				return true;
-			} else {
-				return false;
+
+		var xCoord = parseInt(checkSquare[0] - 1);
+		var yCoord = parseInt(checkSquare[1] - 1);
+
+        for (var x = xCoord; x <= xCoord + 2; x++)
+			for (var y = yCoord; y <= yCoord + 2; y++)
+			{
+				var boxElement = document.getElementById(x + "," + y);
+				if ($(boxElement).attr("class") === "bomb")
+					bombCount++;
 			}
-		}
-		//Checks if checksquare is in the top to avoid wrapping back to bottom row.
-		function checkUp(checkSquare){
-			if (parseInt(checkSquare) <= 7){
-				return true;
-			} else {
-				return false;
-			}
-		}
-        //console.log(leftArray);
-        //console.log(rightArray);
-        
-        //check topleft
-        console.log(checkSquare);
-        if ($("#" + parseInt(checkSquare - 9)).attr("class") === "bomb" && checkLeft(checkSquare) !== true){
-            //console.log("top-left: BOMB! ");
-            bombCount += 1;
-        }
-        //check topmid
-        if ($("#" + parseInt(checkSquare - 8)).attr("class") === "bomb" && checkUp(checkSquare) !== true){
-            //console.log("top-mid: BOMB!");
-            bombCount += 1;
-        }
-        //check topright
-        if ($("#" + parseInt(checkSquare - 7)).attr("class") === "bomb" && checkRight(checkSquare) !== true){
-            //console.log("top right: BOMB!");
-            bombCount += 1;
-        }
-        //check left square.
-        if ($("#" + parseInt(checkSquare - 1)).attr("class") === "bomb" && checkLeft(checkSquare) !== true){
-            //console.log("left: BOMB!");
-            bombCount += 1;
-        }
-        //check right square.
-        if ($("#" + parseInt(+checkSquare + 1)).attr("class") === "bomb" && checkRight(checkSquare) !== true){
-            //console.log("right: BOMB!");
-            bombCount += 1;
-        }
-        //check bottom left square.
-        if ($("#" + parseInt(+checkSquare + 7)).attr("class") === "bomb" && checkLeft(checkSquare) !== true){
-            //console.log("bottomleft: BOMB!");
-            bombCount += 1;
-        }
-        //check bottom middle square
-        if ($("#" + parseInt(+checkSquare + 8)).attr("class") === "bomb" && checkDown(checkSquare) !== true){
-            //console.log("middle bottom: BOMB!");
-            bombCount += 1;
-        }
-        //check bottom right
-        if ($("#" + parseInt(+checkSquare + 9)).attr("class") === "bomb" && checkRight(checkSquare) !== true){
-            //console.log("bottom right: BOMB!");
-            bombCount += 1;
-        }
+		
         $(this).append(bombCount);
-    
     });
     
-    //place flag on single click.
+    //flag on click.
     $(".bomb, .box").click(function(){
-        
-        $(this).children("img").toggleClass("flag");
-        
+        $(this).toggleClass("flag");
+        checkWin();
     });
 });    
     

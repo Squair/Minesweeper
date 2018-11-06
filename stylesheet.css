@@ -5,11 +5,8 @@ body, html {
 }
 
 .box, .bomb {
-    height: 25%;
+	height: 25%;
     width: 12.5%; 
-}
-
-.box, .bomb {
     margin: 0 auto;
     padding: 0;
     float: left;
@@ -22,26 +19,28 @@ body, html {
     line-height: 225%;
     font-size: 4em;
     font-family: monospace;
+	transition: 0.25s;
 }
 
+.box:hover, .bomb:hover {
+	opacity: 0.1;
+}
 
-
-.boxContainer {
-    
+#boxContainer {
     width: 50%;
     height: 50%;
     margin: 0 auto;
 
 }
+
 .hide {
     
     background-color: white;
 }
 
 .flag {
- background-color: grey; 
-    height: 100%;
-    width: 100%;
+ 	background-color: grey; 
+
     content: url(images/flag.png);
     z-index: 3;
     -webkit-user-select: none; /* webkit (safari, chrome) browsers */
