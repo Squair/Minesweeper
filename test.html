@@ -1,10 +1,7 @@
 <html>
 <head>
-
-
 <link type="text/css" rel="stylesheet" href="stylesheet.css">
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-	
 </head>
 <body>
 	
@@ -14,10 +11,7 @@
 	var gridSizeY = 8;
 	var totalBombs = 0;
 	
-    function hasClass(element, cls) {
-    	return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
-    }   
-		
+
     function drawPage(){
 		$("body").append("<div id='boxContainer'>");
 		var boxContainer = document.getElementById("boxContainer");
@@ -28,12 +22,11 @@
 			{
 			  var rand = Math.floor(Math.random() * 100);
 			  //20% chance could generate a bomb on generated square.
-			  if (rand <= 20)
-			  {
-				$(boxContainer).append("<div class='bomb' id='" + x + "," + y + "'><img></div>");  
+			  if (rand <= 20){
+				$(boxContainer).append("<div class='bomb' id='" + x + "," + y + "'></div>");  
 				totalBombs++;
 			  } else {
-				$(boxContainer).append("<div class='box' id='" + x + "," + y + "'><img></div>");  
+				$(boxContainer).append("<div class='box' id='" + x + "," + y + "'></div>");  
 			  }
 			}
 		console.log("Total bombs: " + totalBombs);
@@ -41,11 +34,59 @@
 	
 	function checkWin(){
 		var flags = document.getElementsByClassName("bomb flag");
+		var checked = document.getElementsByClassName("box alive");
 		
 		console.log("Total flags: " + flags.length);
-		if (flags.length == totalBombs)
+		console.log("Total checked: " + checked.length);
+		console.log("Boxs to check: " + (gridSizeX * gridSizeY - totalBombs));
+		if (flags.length == totalBombs && (gridSizeX * gridSizeY - totalBombs) == checked.length)
 			alert("You win!");
 	}
+	
+	
+		function checkBombs(xStart, yStart, box){
+			if (!$(box).hasClass("alive") && !$(box).hasClass("bomb")){
+				var bombCount = 0; //Keep track of bombs around clicked square.
+				
+				xStart = parseInt(xStart);
+				yStart = parseInt(yStart);
+				
+				var xCoord = parseInt(xStart - 1);
+				var yCoord = parseInt(yStart - 1);
+				
+				if (xStart + 1 > gridSizeY || yStart + 1 > gridSizeX)
+					return;
+				if (xStart == 0)
+					xCoord++;
+				if (yStart == 0)
+					yCoord++;
+
+				for (var x = xCoord; x <= xStart + 1; x++)
+					for (var y = yCoord; y <= yStart + 1; y++)
+					{
+						var boxElement = document.getElementById(x + "," + y);
+						if ($(boxElement).hasClass("bomb"))
+							bombCount++;
+						
+					}
+			
+				$(box).addClass("alive");
+				$(box).append("<p class='bombCount" + bombCount + "'>" + bombCount + "</p>");
+				$(".bombCount0").parent(box).css("background-color", "darkgreen");
+				
+				if (bombCount == 0){
+				for (var x = xCoord; x <= xStart + 1; x++)
+					for (var y = yCoord; y <= yStart + 1 + 2; y++)
+					{
+						var boxElement = document.getElementById(x + "," + y);
+						if (!$(boxElement).hasClass("alive"))
+							checkBombs(x, y, boxElement);
+					}	
+				}
+			}
+		}
+	
+
 	
 $(document).ready(function(){
     drawPage();
@@ -59,30 +100,21 @@ $(document).ready(function(){
     
     //If normal box clicked.
     $(".box").dblclick(function(){
-        $(this).addClass("alive");
+        
         //Get coords of square number that was clicked.
         var checkSquare = this.id.split(",");
 		
-        var bombCount = 0; //Keep track of bombs around clicked square.
-
-		var xCoord = parseInt(checkSquare[0] - 1);
-		var yCoord = parseInt(checkSquare[1] - 1);
-
-        for (var x = xCoord; x <= xCoord + 2; x++)
-			for (var y = yCoord; y <= yCoord + 2; y++)
-			{
-				var boxElement = document.getElementById(x + "," + y);
-				if ($(boxElement).attr("class") === "bomb")
-					bombCount++;
-			}
-		
-        $(this).append(bombCount);
-    });
+		checkBombs(checkSquare[0], checkSquare[1], this);
+		checkWin();
+	});
     
     //flag on click.
     $(".bomb, .box").click(function(){
-        $(this).toggleClass("flag");
-        checkWin();
+		if (!$(this).hasClass("alive"))
+		{
+        	$(this).toggleClass("flag");
+        	checkWin();
+		}
     });
 });    
     

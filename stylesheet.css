@@ -6,17 +6,18 @@ body, html {
 
 .box, .bomb {
 	height: 25%;
-    width: 12.5%; 
+    width: 11%; 
     margin: 0 auto;
     padding: 0;
     float: left;
     position: relative;
     background-color: grey;  
+	border: 2px solid black;
     border-radius: 5px;
     text-align: center;
     display: table-cell;
     vertical-align: middle;
-    line-height: 225%;
+    line-height: -50%;
     font-size: 4em;
     font-family: monospace;
 	transition: 0.25s;
@@ -24,13 +25,15 @@ body, html {
 
 .box:hover, .bomb:hover {
 	opacity: 0.1;
+	border: 2px solid yellow;
 }
 
 #boxContainer {
-    width: 50%;
-    height: 50%;
+	position: absolute;
+	left: 22.5%;
+    width: 60%;
+    height: 48.25%;
     margin: 0 auto;
-
 }
 
 .hide {
@@ -40,7 +43,7 @@ body, html {
 
 .flag {
  	background-color: grey; 
-
+	background-size: 100%;
     content: url(images/flag.png);
     z-index: 3;
     -webkit-user-select: none; /* webkit (safari, chrome) browsers */
@@ -56,4 +59,36 @@ body, html {
 .alive {
     background-color: greenyellow;
 }
+/* Colours for all bomb text*/
+.bombCount0, .bombCount1, .bombCount2, .bombCount3, .bombCount4, .bombCount5, .bombCount6, .bombCount7, .bombCount8 {
+	text-align: center;
+	line-height: 20%;
+}
+.bombCount0 {
+	display: none;
+}
+.bombCount1 {
+	color: blue;
+}
+.bombCount2 {
+	color: green;
+}
+.bombCount3 {
+	color: red;
+}
 
+.bombCount4 {
+	color: purple;
+}
+.bombCount5 {
+	color: maroon;
+}
+.bombCount6 {
+	color: turquoise;
+}
+.bombCount7 {
+	color: black;
+}
+.bombCount8 {
+	color: gray;
+}
