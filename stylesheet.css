@@ -5,8 +5,7 @@ body, html {
 }
 
 .box, .bomb {
-	height: 25%;
-    width: 11%; 
+	
     margin: 0 auto;
     padding: 0;
     float: left;
@@ -62,7 +61,8 @@ body, html {
 /* Colours for all bomb text*/
 .bombCount0, .bombCount1, .bombCount2, .bombCount3, .bombCount4, .bombCount5, .bombCount6, .bombCount7, .bombCount8 {
 	text-align: center;
-	line-height: 20%;
+	margin-top: 25%;
+	line-height: 10%;
 }
 .bombCount0 {
 	display: none;
@@ -76,7 +76,6 @@ body, html {
 .bombCount3 {
 	color: red;
 }
-
 .bombCount4 {
 	color: purple;
 }

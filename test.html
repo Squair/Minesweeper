@@ -11,7 +11,8 @@
 	var gridSizeY = 8;
 	var totalBombs = 0;
 	
-
+	
+	
     function drawPage(){
 		$("body").append("<div id='boxContainer'>");
 		var boxContainer = document.getElementById("boxContainer");
@@ -30,6 +31,9 @@
 			  }
 			}
 		console.log("Total bombs: " + totalBombs);
+		    
+		$(".box, .bomb").css("width", (100 / gridSizeX - 0.6) + "%");
+		$(".box, .bomb").css("height", (200 / gridSizeY - 0.5) + "%");
     }
 	
 	function checkWin(){
@@ -45,43 +49,44 @@
 	
 	
 		function checkBombs(xStart, yStart, box){
-			if (!$(box).hasClass("alive") && !$(box).hasClass("bomb")){
+			if (!$(box).hasClass("alive") && !$(box).hasClass("bomb")){ //Only check around squares that havent been clicked on and arn't bombs.
 				var bombCount = 0; //Keep track of bombs around clicked square.
 				
-				xStart = parseInt(xStart);
+				xStart = parseInt(xStart); 
 				yStart = parseInt(yStart);
 				
-				var xCoord = parseInt(xStart - 1);
-				var yCoord = parseInt(yStart - 1);
+				//Starting check squares (top left)
+				var xCoord = xStart - 1; 
+				var yCoord = yStart - 1;
 				
-				if (xStart + 1 > gridSizeY || yStart + 1 > gridSizeX)
+				if (xStart + 1 > gridSizeY || yStart + 1 > gridSizeX) //Return if outside bounds
 					return;
-				if (xStart == 0)
+				if (xStart == 0) //If on far left boundry move starting position across one
 					xCoord++;
 				if (yStart == 0)
 					yCoord++;
 
-				for (var x = xCoord; x <= xStart + 1; x++)
+				for (var x = xCoord; x <= xStart + 1; x++) //From starting to ending squares
 					for (var y = yCoord; y <= yStart + 1; y++)
 					{
 						var boxElement = document.getElementById(x + "," + y);
-						if ($(boxElement).hasClass("bomb"))
+						if ($(boxElement).hasClass("bomb")) //If bomb in surrounding 8 square incremenent bombCount
 							bombCount++;
 						
 					}
 			
-				$(box).addClass("alive");
-				$(box).append("<p class='bombCount" + bombCount + "'>" + bombCount + "</p>");
-				$(".bombCount0").parent(box).css("background-color", "darkgreen");
+				$(box).addClass("alive"); //Square has been checked
+				$(box).append("<p class='bombCount" + bombCount + "'>" + bombCount + "</p>"); //Add amount of bombs to square
+				$(".bombCount0").parent(box).css("background-color", "darkgreen"); //If 0 just dark green background
 				
 				if (bombCount == 0){
-				for (var x = xCoord; x <= xStart + 1; x++)
-					for (var y = yCoord; y <= yStart + 1 + 2; y++)
-					{
-						var boxElement = document.getElementById(x + "," + y);
-						if (!$(boxElement).hasClass("alive"))
-							checkBombs(x, y, boxElement);
-					}	
+					for (var x = xCoord; x <= xStart + 1; x++)
+						for (var y = yCoord; y <= yStart + 1; y++)
+						{
+							var boxElement = document.getElementById(x + "," + y);
+							if (!$(boxElement).hasClass("alive"))
+								checkBombs(x, y, boxElement);
+						}	
 				}
 			}
 		}
@@ -90,7 +95,6 @@
 	
 $(document).ready(function(){
     drawPage();
-    
     //toggles press double click.
     $(".bomb").dblclick(function(){
         $(this).addClass("die");
