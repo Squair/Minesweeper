@@ -1,29 +1,30 @@
-body, html {
-    height: 100%;
-    width: 100%;
-    margin: 0;
+body,
+html {
+	height: 100%;
+	width: 100%;
+	margin: 0;
 }
 
-.box, .bomb {
+
+.box,
+.bomb {
 	height: 25%;
-    width: 11%; 
-    margin: 0 auto;
-    padding: 0;
-    float: left;
-    position: relative;
-    background-color: grey;  
+	width: 11%;
+	margin: 0 auto;
+	padding: 0;
+	float: left;
+	position: relative;
+	background-color: grey;
 	border: 2px solid black;
-    border-radius: 5px;
-    text-align: center;
-    display: table-cell;
-    vertical-align: middle;
-    line-height: -50%;
-    font-size: 4em;
-    font-family: monospace;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 4em;
+	font-family: monospace;
 	transition: 0.25s;
 }
 
-.box:hover, .bomb:hover {
+.box:hover,
+.bomb:hover {
 	opacity: 0.1;
 	border: 2px solid yellow;
 }
@@ -31,48 +32,66 @@ body, html {
 #boxContainer {
 	position: absolute;
 	left: 22.5%;
-    width: 60%;
-    height: 48.25%;
-    margin: 0 auto;
+	width: 60%;
+	height: 48.25%;
+	margin: 0 auto;
 }
 
 .hide {
-    
-    background-color: white;
+
+	background-color: white;
 }
 
 .flag {
- 	background-color: grey; 
+	background-color: grey;
 	background-size: 100%;
-    content: url(images/flag.png);
-    z-index: 3;
-    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-    -moz-user-select: none; /* mozilla browsers */
-    -khtml-user-select: none; /* webkit (konqueror) browsers */
-    -ms-user-select: none; /* IE10+ */
+	content: url(images/flag.png);
+	z-index: 3;
+	-webkit-user-select: none;
+	/* webkit (safari, chrome) browsers */
+	-moz-user-select: none;
+	/* mozilla browsers */
+	-khtml-user-select: none;
+	/* webkit (konqueror) browsers */
+	-ms-user-select: none;
+	/* IE10+ */
 }
 
 .die {
-    background-color: red;
+	background-color: red;
 }
 
 .alive {
-    background-color: greenyellow;
+	background-color: greenyellow;
 }
+
 /* Colours for all bomb text*/
-.bombCount0, .bombCount1, .bombCount2, .bombCount3, .bombCount4, .bombCount5, .bombCount6, .bombCount7, .bombCount8 {
+.bombCount0,
+.bombCount1,
+.bombCount2,
+.bombCount3,
+.bombCount4,
+.bombCount5,
+.bombCount6,
+.bombCount7,
+.bombCount8 {
+	margin: 0 auto;
+	display: inline-block;
 	text-align: center;
-	line-height: 20%;
 }
+
 .bombCount0 {
 	display: none;
 }
+
 .bombCount1 {
 	color: blue;
 }
+
 .bombCount2 {
 	color: green;
 }
+
 .bombCount3 {
 	color: red;
 }
@@ -80,15 +99,19 @@ body, html {
 .bombCount4 {
 	color: purple;
 }
+
 .bombCount5 {
 	color: maroon;
 }
+
 .bombCount6 {
 	color: turquoise;
 }
+
 .bombCount7 {
 	color: black;
 }
+
 .bombCount8 {
 	color: gray;
 }
