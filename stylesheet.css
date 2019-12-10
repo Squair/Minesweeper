@@ -5,10 +5,35 @@ html {
 	margin: 0;
 }
 
+p {
+	-webkit-touch-callout: none; /* iOS Safari */
+	  -webkit-user-select: none; /* Safari */
+	   -khtml-user-select: none; /* Konqueror HTML */
+		 -moz-user-select: none; /* Old versions of Firefox */
+		  -ms-user-select: none; /* Internet Explorer/Edge */
+			  user-select: none; /* Non-prefixed version, currently
+									supported by Chrome, Opera and Firefox */
+  }
+
+  #timerBox, #bombCounter {
+	position: absolute;
+	top: 0;
+	border: 2px solid red;
+	padding: 20px;
+	margin: 0;
+  }
+
+#bombCounter {
+	left: 0;
+}
+
+#timerBox {
+	right: 0;
+}
 
 .box,
 .bomb {
-	height: 25%;
+	height: 22.5%;
 	width: 11%;
 	margin: 0 auto;
 	padding: 0;
