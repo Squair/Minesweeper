@@ -1,31 +1,39 @@
 		var gridSizeX = 8;
 		var gridSizeY = 8;
-		var totalBombs = 0;
+		var totalBombs = 10;
+		var remainingBombs;
 		var timer = false;
 		var timerTimeout;
 
 		function drawPage() {
+			updateBombCounter();
 			var boxContainer = $('#boxContainer');
 
 			//Generate grid.
-			for (var y = 0; y < gridSizeY; y++)
+			for (var y = 0; y < gridSizeY; y++){
 				for (var x = 0; x < gridSizeX; x++) {
-					var rand = Math.floor(Math.random() * 100);
-					//20% chance could generate a bomb on generated square.
-					if (rand <= 1) {
-						$(boxContainer).append("<div class='box bomb' id='" + x + "," + y + "'></div>");
-						totalBombs++;
-					} else {
-						$(boxContainer).append("<div class='box' id='" + x + "," + y + "'></div>");
-					}
+					$(boxContainer).append("<div class='box' id='" + x + "," + y + "'></div>");
 				}
-			console.log("Total bombs: " + totalBombs);
+			}
+		}
+
+		function allocateBombs(bombAmount){
+			while (bombAmount != 0){
+				var randX = Math.floor(Math.random() * gridSizeX);
+				var randY = Math.floor(Math.random() * gridSizeY);
+				var boxElement = document.getElementById(randX + "," + randY);
+
+				if (!$(boxElement).hasClass('bomb') && !$(boxElement).hasClass('first')){
+					$(boxElement).addClass('bomb');
+					bombAmount--;
+				}
+			}
 		}
 
 		function updateBombCounter(){
 			let bombCounter = $('#bombCounter');
 			let flags = $('.flag').length;
-			bombCounter.text("Bombs remaining: " + (totalBombs - flags));
+			bombCounter.text("Bombs remaining: " + (remainingBombs - flags));
 		}
 
 		function updateTimer(){
@@ -40,8 +48,8 @@
 
 			console.log("Total flags: " + flags.length);
 			console.log("Total checked: " + checked.length);
-			console.log("Boxs to check: " + (gridSizeX * gridSizeY - totalBombs));
-			if (flags.length == totalBombs && (gridSizeX * gridSizeY - totalBombs) == checked.length){
+			console.log("Boxs to check: " + (gridSizeX * gridSizeY - remainingBombs));
+			if (flags.length == remainingBombs && (gridSizeX * gridSizeY - remainingBombs) == checked.length){
 				alert("You win!");
 
 				reset();
@@ -106,11 +114,10 @@
 			$('#timer').text("0");
 
 			//Reset bomb count
-			totalBombs = 0;
+			remainingBombs = totalBombs;
 
 			//Redraw page
 			drawPage();
-			updateBombCounter();
 		}
 
 		function checkAction(){
@@ -120,6 +127,8 @@
 				if (!timer){
 					timer = true;
 					updateTimer();
+					$(this).toggleClass("first");
+					allocateBombs(totalBombs);
 				}
 				//Shift-click for flag placement
 				if (e.shiftKey) {
