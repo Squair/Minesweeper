@@ -1,6 +1,6 @@
 		var gridSizeX = 8;
 		var gridSizeY = 8;
-		var totalBombs = 10;
+		var totalBombs = 15;
 		var remainingBombs;
 		var timer = false;
 		var timerTimeout;
@@ -11,13 +11,19 @@
 
 			//Generate grid.
 			for (var y = 0; y < gridSizeY; y++){
+				$(boxContainer).append("<div class='boxRow' id='boxRow" + y + "'></div>");
+				let row = $("#boxRow" + y);
 				for (var x = 0; x < gridSizeX; x++) {
-					$(boxContainer).append("<div class='box' id='" + x + "," + y + "'></div>");
+					$(row).append("<div class='box' id='" + x + "," + y + "'><p class='preBomb'></p></div>");
 				}
 			}
 		}
 
 		function allocateBombs(bombAmount){
+			if (bombAmount >= (gridSizeX * gridSizeY)){
+				console.log("Amont of bombs is larger than grid");
+				return;
+			}
 			while (bombAmount != 0){
 				var randX = Math.floor(Math.random() * gridSizeX);
 				var randY = Math.floor(Math.random() * gridSizeY);
@@ -57,11 +63,11 @@
 			}
 		}
 
-
 		function checkBombs(xStart, yStart, box) {
 			if (!$(box).hasClass("alive") && !$(box).hasClass("bomb")) {
 				var bombCount = 0; //Keep track of bombs around clicked square.
 
+				//Offset starting postion to bottom left of box
 				var xCoord = xStart - 1;
 				var yCoord = yStart - 1;
 
@@ -88,18 +94,21 @@
 				$(box).addClass("alive");
 
 				//Add bomb number to box
-				$(box).append("<p class='bombCount" + bombCount + "'>" + bombCount + "</p>");
+				let bombCounter = $(box).children('.preBomb');
+				bombCounter.addClass(`bombCount${bombCount}`);
+				bombCounter.text(bombCount);
 
 				//If no bombs found in surrounding clicked square, go round each again, and call this function on it.
 				if (bombCount == 0) {
 					//Set background to green for entirley safe squares
 					$(box).css("background-color", "darkgreen");
-					for (var x = xCoord; x <= xStart + 1; x++)
+					for (var x = xCoord; x <= xStart + 1; x++){
 						for (var y = yCoord; y <= yStart + 1; y++) {
 							var boxElement = document.getElementById(x + "," + y);
 							if (!$(boxElement).hasClass("alive"))
 								checkBombs(x, y, boxElement);
 						}
+					}
 				}
 			}
 		}
@@ -133,12 +142,21 @@
 				//Shift-click for flag placement
 				if (e.shiftKey) {
 					if (!$(this).hasClass("alive")) {
+						$(this).removeClass("question");
 						$(this).toggleClass("flag");
 						updateBombCounter();
 						checkWin();
 					}
 					return;
 				} 
+				if (e.ctrlKey){
+					if (!$(this).hasClass("alive")) {
+						$(this).removeClass("flag");
+						$(this).toggleClass("question");
+						checkWin();
+					}
+					return;	
+				}
 				//if bomb, alert and reset afterward
 				if ($(this).hasClass("bomb")){
 					$(this).addClass("die");
@@ -146,6 +164,9 @@
 					reset();
 					checkAction();
 				} else {
+					$(this).removeClass("question");
+					$(this).removeClass("flag");
+
 					//Get coords of square number that was clicked.
 					var checkSquare = this.id.split(",");
 					

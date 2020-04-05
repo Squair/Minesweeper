@@ -1,0 +1,131 @@
+$gridX: 8;
+$gridY: 8;
+
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.box, .bomb {
+	height: 100%;
+    width: calc(100% / #{$gridX}); 
+    margin: 0 auto;
+    padding: 0;
+    float: left;
+    position: relative;
+    background-color: grey;  
+	border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    display: table;
+    vertical-align: middle;
+    box-sizing: border-box;
+
+    font-size: 4em;
+    font-family: monospace;
+	transition: 0.25s;
+}
+
+.box:hover, .bomb:hover {
+	opacity: 0.1;
+	border: 2px solid yellow;
+}
+
+#boxContainer {
+	position: absolute;
+	left: 22.5%;
+    width: 60%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.boxRow {
+    width: 100%;
+    height: calc(100% / #{$gridY});
+
+}
+
+.hide {
+    
+    background-color: white;
+}
+
+.flag {
+ 	background-color: grey; 
+	background-size: 100%;
+    content: url(images/flag.png);
+    z-index: 3;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.die {
+    background-color: red;
+}
+
+.alive {
+    background-color: greenyellow;
+}
+/* Colours for all bomb text*/
+.preBomb, .bombCount0, .bombCount1, .bombCount2, .bombCount3, .bombCount4, .bombCount5, .bombCount6, .bombCount7, .bombCount8 {
+	text-align:center; 
+	vertical-align: middle;
+    display: table-cell;  
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+    font-size: 2vw;
+}
+.bombCount0 {
+    color: transparent;
+}
+.bombCount1 {
+	color: blue;
+}
+.bombCount2 {
+	color: green;
+}
+.bombCount3 {
+	color: red;
+}
+
+.bombCount4 {
+	color: purple;
+}
+.bombCount5 {
+	color: maroon;
+}
+.bombCount6 {
+	color: turquoise;
+}
+.bombCount7 {
+	color: black;
+}
+.bombCount8 {
+	color: gray;
+}
+
+
+  #timerBox, #bombCounter {
+	position: absolute;
+	top: 0;
+	border: 2px solid red;
+	padding: 20px;
+	margin: 0;
+  }
+
+#bombCounter {
+	left: 0;
+}
+
+#timerBox {
+	right: 0;
+}
+
